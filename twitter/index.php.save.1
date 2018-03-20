@@ -1,0 +1,49 @@
+
+<?php
+ini_set('display_errors', 1);
+require_once('TwitterAPIExchange.php');
+
+   $servername = "127.0.0.1";
+    $username = "root";
+    $password = "root";
+    $database = "twitter";
+
+    $conn = new mysqli($servername, $username, $password,$database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+
+
+$settings = array(
+    'oauth_access_token' => "864680156-TSZZROpEeM6Cws1IRkeGL7z21Y9aEJGkRkuNlWAB",
+    'oauth_access_token_secret' => "11OhRdINI6NTqshGu4ZkmVpZURGe60nlzWVF9Z3EQ4pjF",
+    'consumer_key' => "P1oA48Q4H8FAOuzV0hBKuuIM6",
+    'consumer_secret' => "MAZfodXX1gumAZjgHf9VydGPcaC4XfASQBcHZtwlE8gvv8JNNS"
+);
+$twitter = new TwitterAPIExchange($settings);
+
+$status_id = urldecode($_GET['tweet_id']);
+$m = urldecode($_GET['tweet_reply']);
+$screen = urldecode($_GET['screen_name']);
+//$status_id = "975936236132036608";
+//$m = "hELLO kaRTIK";
+//$screen = "yogesh_gju40";
+
+//$status_id='975848669416120320';
+$message="@".$screen." ".$m;
+$postfields = array( 
+    'status' => $message,
+    'in_reply_to_status_id'=> $status_id,
+);
+
+$url = 'https://api.twitter.com/1.1/statuses/update.json';
+$requestMethod = 'POST';
+if($twitter->buildOauth($url, $requestMethod)
+             ->setPostfields($postfields)
+             ->performRequest())
+{
+	$query = "UPDATE tweets SET 
+    echo "200";
+}
+else
+    echo "400";
